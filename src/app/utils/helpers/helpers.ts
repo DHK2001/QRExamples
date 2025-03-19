@@ -1,4 +1,4 @@
-export const handleDownload = (ref: React.RefObject<HTMLDivElement | null>) => {
+export const handleDownload = (ref: React.RefObject<HTMLDivElement | null>, name: string) => {
   if (!ref.current) return;
 
   const svgElement = ref.current.querySelector("svg");
@@ -8,7 +8,7 @@ export const handleDownload = (ref: React.RefObject<HTMLDivElement | null>) => {
     const url = URL.createObjectURL(svgBlob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "qrcode.svg";
+    link.download = `${name}.svg`;
     link.click();
     URL.revokeObjectURL(url);
   }
