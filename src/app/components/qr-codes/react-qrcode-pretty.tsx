@@ -6,16 +6,49 @@ interface Props {
   value: string;
 }
 
+const qrData = {
+  "qr_json": {
+    "style": {
+      "background": "#6f1b1b",
+      "borderRadius": "0px",
+    },
+    "backgroundOptions": {
+      "color": "transparent",
+    },
+    "margin": 0,
+    "cornersDotOptions": {
+      "color": "#8a0f0f",
+      "type": "dot",
+    },
+    "cornersSquareOptions": {
+      "color": "#ffffff",
+      "type": "dot",
+    },
+    "dotsOptions": {
+      "color": "#ffffff",
+      "type": "dots",
+    },
+    "image": "https://api.izoukhai.com/assets/2651dc71-f532-4ed8-8c5e-61823759185a",
+    "imageOptions": {
+      "imageSize": 0.5,
+      "margin": "3",  // Esto podría ser un string
+      "hideBackgroundDots": true,
+    },
+    "data": "https://youtu.be/b5aI7qJ2pgs?si=FO3pnClT8zLSJcqN"
+  }
+};
+
+const qrJson = qrData.qr_json;
+
 export default function ReactQRCodePretty({ value }: Props) {
   const qrCodeRef = useRef<HTMLDivElement>(null);
   const [base64Image, setBase64Image] = useState<string | null>(null);
 
   useEffect(() => {
-    imageToBase64("https://avatars.githubusercontent.com/u/1000000?v=4")
+    imageToBase64(qrJson.image) // Usamos la URL de la imagen desde qrJson
       .then(setBase64Image)
       .catch((error) => console.error("Error converting image to Base64:", error));
   }, []);
-
 
   const handleDownloadSVG = () => {
     if (qrCodeRef.current) {
@@ -42,7 +75,7 @@ export default function ReactQRCodePretty({ value }: Props) {
     <div>
       <div ref={qrCodeRef}>
         <QrCode
-          value={value}
+          value={value || qrJson.data}
           size={256}
           level="H"
           image={base64Image || ""}
@@ -52,12 +85,12 @@ export default function ReactQRCodePretty({ value }: Props) {
             body: "fluid",
           }}
           color={{
-            eyes: "#054c94",
-            body: "#16007a",
+            eyes: qrJson.cornersDotOptions.color || "#054c94",
+            body: qrJson.cornersSquareOptions.color || "#16007a",
           }}
-          padding={12}
+          padding={qrJson.margin || 12}  // Usamos el valor de margin de qrJson
           margin={0}
-          bgColor="#ffffff"
+          bgColor={qrJson.style.background}
           bgRounded={true}
         />
       </div>

@@ -5,6 +5,40 @@ interface Props {
   value: string;
 }
 
+const qrData = {
+  "qr_json": {
+    "style": {
+      "background": "#6f1b1b",
+      "borderRadius": "0px",
+    },
+    "backgroundOptions": {
+      "color": "transparent",
+    },
+    "margin": 0,
+    "cornersDotOptions": {
+      "color": "#8a0f0f",
+      "type": "dot",
+    },
+    "cornersSquareOptions": {
+      "color": "#ffffff",
+      "type": "dot",
+    },
+    "dotsOptions": {
+      "color": "#ffffff",
+      "type": "dots",
+    },
+    "image": "https://api.izoukhai.com/assets/2651dc71-f532-4ed8-8c5e-61823759185a",
+    "imageOptions": {
+      "imageSize": 0.24,
+      "margin": "3",
+      "hideBackgroundDots": true,
+    },
+    "data": "https://youtu.be/b5aI7qJ2pgs?si=FO3pnClT8zLSJcqN",
+  }
+};
+
+const qrJson = qrData.qr_json;
+
 type QRStyle = "dots" | "squares" | "fluid";
 
 export default function ReactQRCodeLogo({ value }: Props) {
@@ -31,28 +65,28 @@ export default function ReactQRCodeLogo({ value }: Props) {
     <div>
       <QRCode
         id="qrcode"
-        value={value}
+        value={qrJson.data}
         size={256}
         style={{
-          border: "5px solid #ffffff",
+          border: qrJson.style.borderRadius === '0px' ? "none" : "5px solid #ffffff",
           height: "auto",
           maxWidth: "100%",
-          borderRadius: "20px",
+          borderRadius: qrJson.style.borderRadius,
         }}
-        quietZone={14}
-        bgColor="#ffffff"
-        fgColor="#000000"
+        quietZone={qrJson.margin || 14}
+        bgColor={qrJson.style.background}
+        fgColor={qrJson.dotsOptions.color}
         ecLevel="M"
         enableCORS={true}
-        logoImage="https://avatars.githubusercontent.com/u/32333192?s=200&v=4"
-        logoWidth={256 * 0.2}
-        logoHeight={256 * 0.2}
-        logoPadding={2}
-        removeQrCodeBehindLogo={true}
+        logoImage={qrJson.image}
+        logoWidth={256 * (qrJson.imageOptions.imageSize || 0.2)}
+        logoHeight={256 * (qrJson.imageOptions.imageSize || 0.2)}
+        logoPadding={Number(qrJson.imageOptions.margin) || 2}
+        removeQrCodeBehindLogo={qrJson.imageOptions.hideBackgroundDots}
         logoPaddingStyle="square"
-        qrStyle={qrStyle}
         eyeRadius={10}
-        eyeColor="#000000"
+        eyeColor={qrJson.cornersSquareOptions.color || "#000000"}
+        qrStyle={qrJson.dotsOptions.type as QRStyle}
       />
       <button
         type="button"
